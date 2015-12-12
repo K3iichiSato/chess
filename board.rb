@@ -30,56 +30,55 @@ board.each_index do |row|
         end       
     end 
 end
-=begin 
 
 # make row of white pawns 
 board[6].each_index do |c|
-    board[6][c][1] = :wp 
+    board[6][c].contains = :wp 
 end
 
 # place white rooks
-board[7][0][1] = :wr
-board[7][7][1] = :wr
+board[7][0].contains = :wr
+board[7][7].contains = :wr
 
 #place white knights
-board[7][1][1] = :wn 
-board[7][6][1] = :wn 
+board[7][1].contains = :wn 
+board[7][6].contains = :wn 
 
 #place white bishops
-board[7][2][1] = :wb
-board[7][5][1] = :wb 
+board[7][2].contains = :wb
+board[7][5].contains = :wb 
 
 #place white queen
-board[7][3][1] = :wq 
+board[7][3].contains = :wq 
 
 #place white king 
-board[7][4][1] = :wk
+board[7][4].contains = :wk
 
 
 # make row of black pawns 
 board[1].each_index do |c|
-    board[1][c][1] = :bp 
+    board[1][c].contains = :bp 
 end
 # place black rooks
-board[0][0][1] = :br
-board[0][7][1] = :br
+board[0][0].contains = :br
+board[0][7].contains = :br
 
 #place black knights
-board[0][1][1] = :bn 
-board[0][6][1] = :bn 
+board[0][1].contains = :bn 
+board[0][6].contains = :bn 
 
 #place black bishops
-board[0][2][1] = :bb
-board[0][5][1] = :bb 
+board[0][2].contains = :bb
+board[0][5].contains = :bb 
 
 #place black queen
-board[0][3][1] = :bq 
+board[0][3].contains = :bq 
 
 #place black king 
-board[0][4][1] = :bk
+board[0][4].contains = :bk
 
 p board 
-=end 
+
 
 white_square = ["            ","            ","            ","            ","            ","____________"]
          wwp = ["            ","            ","     ()     ","     )(     ","    (__)    ","____________"]
