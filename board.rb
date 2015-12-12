@@ -1,31 +1,36 @@
+class Square
+    attr_accessor :color, :row, :col, :contains 
+    def initialize(color, row, col, contains = :e) 
+        @color = color
+        @row = row
+        @col = col 
+        @contains = contains 
+    end
+end
+
 board = Array.new(8).map!{Array.new(8)}
 
 #every other row
-board.each_index do |ind| 
-    if ind % 2 == 0 
-        board[ind].each_index do |sq|
-            if sq % 2 == 0 
-                board[ind][sq] = :w
+board.each_index do |row| 
+    if row % 2 == 0 
+        board[row].each_index do |col|
+            if col % 2 == 0 
+                board[row][col] = Square.new(:w, row, col)
             else
-                board[ind][sq] = :b 
+                board[row][col] = Square.new(:b, row, col)
             end
         end
     else 
-        board[ind].each_index do |sq|
-            if sq % 2 == 0 
-                board[ind][sq] = :b
+        board[row].each_index do |col|
+            if col % 2 == 0 
+                board[row][col] = Square.new(:b, row, col)
             else
-                board[ind][sq] = :w
+                board[row][col] = Square.new(:w, row, col)
             end
         end       
     end 
 end
-# make each square empty 
-board.each_index do |r|
-    board[r].each_index do |c|
-        board[r][c] = [board[r][c],:e]
-    end
-end 
+=begin 
 
 # make row of white pawns 
 board[6].each_index do |c|
@@ -74,6 +79,7 @@ board[0][3][1] = :bq
 board[0][4][1] = :bk
 
 p board 
+=end 
 
 white_square = ["            ","            ","            ","            ","            ","____________"]
          wwp = ["            ","            ","     ()     ","     )(     ","    (__)    ","____________"]
@@ -113,6 +119,8 @@ black_square = ["############","############","############","############","###
          bbq = ["### oooo ###","### \\##/ ###","#### )( ####","#### )( ####","## {####} ##","############"]
          bbk = ["### _+_ ####","### \\#/ ####","### <#> ####","### }#\{ ####","### )#( ####","## {###} ###"]
 
+
+
 d = ""
 
 line = " _________________________________________________________________________________________________________"
@@ -123,10 +131,10 @@ board.each_index do |row|
     for i in 0..5
         d << "\n||"
         board[row].each do |sq|
-            if sq[0] == :w 
-                case sq[1] 
+            if sq.color == :w 
+                case sq.contains
                 when :e
-                d << white_square[i]
+                    d << white_square[i]
                 when :wp 
                     d << wwp[i] 
                 when :wr 
@@ -154,8 +162,8 @@ board.each_index do |row|
                     d << wbk[i]
                 end 
 
-          elsif sq[0] == :b 
-                case sq[1] 
+            elsif sq.color == :b 
+                case sq.contains
                 when :e 
                 d << black_square[i]
                 when :wp 
