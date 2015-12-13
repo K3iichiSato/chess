@@ -16,10 +16,11 @@ class Square
 end
 
 class Piece
-        attr_accessor :color, :square 
+        attr_accessor :color, :square, :move  
     def initialize(color, square)
         @color = color 
         @square = square 
+        @move = move 
     end
 end
 
