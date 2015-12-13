@@ -211,6 +211,7 @@ def move(from, to)
         to.contains = piece 
         piece.square = to 
         from.contains = :e 
+        piece.move += 1 
         true
     else
         false
