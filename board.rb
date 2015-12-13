@@ -44,9 +44,11 @@ class Pawn < Piece
 
         valid_moves = []
         if color == :w 
-        valid_moves = [board[square.row-1][square.col],board[square.row-2][square.col]] 
+        valid_moves = [board[square.row-1][square.col]] 
+        valid_moves << board[square.row-2][square.col] if move == 0
         elsif color == :b
         valid_moves = [board[square.row+1][square.col],board[square.row+2][square.col]]
+        valid_moves << board[square.row+2][square.col] if move == 0
         end
         valid_moves
     end 
@@ -242,6 +244,9 @@ end
 display 
 gets.chomp
 move(@board[6][4],@board[4][4])
+display 
+gets.chomp
+move(@board[4][4],@board[2][4])
 display 
 =begin
 gets.chomp
