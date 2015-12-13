@@ -178,9 +178,9 @@ board[0][2].contains = Bishop.new(:b, board[0][2])
 board[0][5].contains = Bishop.new(:b, board[0][5])  
 
 board[7][3].contains = Queen.new(:w, board[7][3])
-board[0][3].contains = Queen.new(:w, board[0][3])
+board[0][3].contains = Queen.new(:b, board[0][3])
 
-board[7][4].contains = King.new(:b, board[7][4])
+board[7][4].contains = King.new(:w, board[7][4])
 board[0][4].contains = King.new(:b, board[0][4])
 
 
