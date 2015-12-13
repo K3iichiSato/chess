@@ -6,7 +6,125 @@ class Square
         @col = col 
         @contains = contains 
     end
+    def display
+        if color == :w
+            ["            ","            ","            ","            ","            ","____________"]
+        elsif color == :b 
+            ["############","############","############","############","############","############"]
+        end
+    end
 end
+
+class Piece
+        attr_accessor :color, :square 
+    def initialize(color, square)
+        @color = color 
+        @square = square 
+    end
+end
+
+class Pawn < Piece 
+    def display 
+        if square.color == :w
+            if color == :w
+                ["            ","            ","     ()     ","     )(     ","    (__)    ","____________"]
+            elsif color == :b 
+                ["            ","            ","     ()     ","     )(     ","    (##)    ","____________"]
+            end
+        elsif square.color == :b
+            if color == :w
+                ["############","############","#### () ####","#### )( ####","### (__) ###","############"]
+            elsif color == :b 
+                ["############","############","#### () ####","#### )( ####","### (##) ###","############"]
+            end
+        end
+    end
+end 
+class Rook < Piece 
+    def display 
+        if square.color == :w
+            if color == :w
+                ["            ","    _ _ _   ","   [____]   ","    ]__[    ","   [____]   ","____________"]
+            elsif color == :b 
+                ["            ","    _ _ _   ","   [####]   ","    ]##[    ","   [####]   ","____________"]
+            end
+        elsif square.color == :b
+            if color == :w
+                ["############","####_ _ _###","## [____] ##","### ]__[ ###","## [____] ##","############"]
+            elsif color == :b 
+                ["############","####_ _ _###","## [####] ##","### ]##[ ###","## [####] ##","############"]
+            end
+        end
+    end
+end 
+class Knight < Piece 
+    def display 
+        if square.color == :w
+            if color == :w
+                ["            ","     ___    ","   <(@__]   ","    )_)     ","   (___)    ","____________"]
+            elsif color == :b 
+                ["            ","     ___    ","   <(@##]   ","    )#)     ","   (###)    ","____________"]
+            end
+        elsif square.color == :b
+            if color == :w
+                ["############","#####___####","## <(@__] ##","### )_) ####","## (___) ###","############"]
+            elsif color == :b 
+                ["############","#####___####","## <(@##] ##","### )#) ####","## (###) ###","############"]
+            end
+        end
+    end
+end 
+class Bishop < Piece 
+    def display 
+        if square.color == :w
+            if color == :w
+                ["            ","     {}     ","     <>     ","     )(     ","    (__)    ","____________"]
+            elsif color == :b 
+                ["            ","     {}     ","     <>     ","     )(     ","    (##)    ","____________"]
+            end
+        elsif square.color == :b
+            if color == :w
+                ["############","#### {} ####","#### <> ####","#### )( ####","### (__) ###","############"]
+            elsif color == :b 
+                ["############","#### {} ####","#### <> ####","#### )( ####","### (##) ###","############"]
+            end
+        end
+    end
+end 
+class King < Piece 
+    def display 
+        if square.color == :w
+            if color == :w
+                ["    _+_     ","    \\_/     ","    < >     ","    } {     ","    )_(     ","___{___}____"]
+            elsif color == :b 
+                ["    _+_     ","    \\#/     ","    <#>     ","    }#\{     ","    )#(     ","___{###}____"]
+            end
+        elsif square.color == :b
+            if color == :w
+                ["### _+_ ####","### \\_/ ####","### < > ####","### } { ####","### )_( ####","## {___} ###"]
+            elsif color == :b 
+                ["### _+_ ####","### \\#/ ####","### <#> ####","### }#\{ ####","### )#( ####","## {###} ###"] 
+            end
+        end
+    end
+end 
+class Queen < Piece 
+    def display 
+        if square.color == :w
+            if color == :w
+                ["    oooo    ","    \\__/    ","     )(     ","     )(     ","   {____}   ","____________"]
+            elsif color == :b 
+                ["    oooo    ","    \\##/    ","     )(     ","     )(     ","   {####}   ","____________"]
+            end
+        elsif square.color == :b
+            if color == :w
+                ["### oooo ###","### \\__/ ###","#### )( ####","#### )( ####","## {____} ##","############"]
+            elsif color == :b 
+                ["### oooo ###","### \\##/ ###","#### )( ####","#### )( ####","## {####} ##","############"]
+            end
+        end
+    end
+end 
 
 board = Array.new(8).map!{Array.new(8)}
 
@@ -31,93 +149,43 @@ board.each_index do |row|
     end 
 end
 
-# make row of white pawns 
+
+
+ 
 board[6].each_index do |c|
-    board[6][c].contains = :wp 
+    board[6][c].contains = Pawn.new(:w, board[6][c])
 end
-
-# place white rooks
-board[7][0].contains = :wr
-board[7][7].contains = :wr
-
-#place white knights
-board[7][1].contains = :wn 
-board[7][6].contains = :wn 
-
-#place white bishops
-board[7][2].contains = :wb
-board[7][5].contains = :wb 
-
-#place white queen
-board[7][3].contains = :wq 
-
-#place white king 
-board[7][4].contains = :wk
-
-
-# make row of black pawns 
 board[1].each_index do |c|
-    board[1][c].contains = :bp 
+    board[1][c].contains = Pawn.new(:b, board[1][c]) 
 end
-# place black rooks
-board[0][0].contains = :br
-board[0][7].contains = :br
 
-#place black knights
-board[0][1].contains = :bn 
-board[0][6].contains = :bn 
+board[7][0].contains = Rook.new(:w, board[7][0])
+board[7][7].contains = Rook.new(:w, board[7][7])
 
-#place black bishops
-board[0][2].contains = :bb
-board[0][5].contains = :bb 
+board[0][0].contains = Rook.new(:b, board[0][0])
+board[0][7].contains = Rook.new(:b, board[0][7])
 
-#place black queen
-board[0][3].contains = :bq 
+board[7][1].contains = Knight.new(:w, board[7][1]) 
+board[7][6].contains = Knight.new(:w, board[7][6]) 
 
-#place black king 
-board[0][4].contains = :bk
+board[0][1].contains = Knight.new(:b, board[0][1])  
+board[0][6].contains = Knight.new(:b, board[0][6])  
+
+board[7][2].contains = Bishop.new(:w, board[7][2]) 
+board[7][5].contains = Bishop.new(:w, board[7][5]) 
+
+board[0][2].contains = Bishop.new(:b, board[0][2]) 
+board[0][5].contains = Bishop.new(:b, board[0][5])  
+
+board[7][3].contains = Queen.new(:w, board[7][3])
+board[0][3].contains = Queen.new(:w, board[0][3])
+
+board[7][4].contains = King.new(:b, board[7][4])
+board[0][4].contains = King.new(:b, board[0][4])
+
+
 
 p board 
-
-
-white_square = ["            ","            ","            ","            ","            ","____________"]
-         wwp = ["            ","            ","     ()     ","     )(     ","    (__)    ","____________"]
-         wwr = ["            ","    _ _ _   ","   [____]   ","    ]__[    ","   [____]   ","____________"]
-         wwn = ["            ","     ___    ","   <(@__]   ","    )_)     ","   (___)    ","____________"]
-         wwb = ["            ","     {}     ","     <>     ","     )(     ","    (__)    ","____________"]
-         wwq = ["    oooo    ","    \\__/    ","     )(     ","     )(     ","   {____}   ","____________"]
-         wwk = ["    _+_     ","    \\_/     ","    < >     ","    } {     ","    )_(     ","___{___}____"]
-
-         wbp = ["            ","            ","     ()     ","     )(     ","    (##)    ","____________"]
-         wbr = ["            ","    _ _ _   ","   [####]   ","    ]##[    ","   [####]   ","____________"]
-         wbn = ["            ","     ___    ","   <(@##]   ","    )#)     ","   (###)    ","____________"]
-         wbb = ["            ","     {}     ","     <>     ","     )(     ","    (##)    ","____________"]
-         wbq = ["    oooo    ","    \\##/    ","     )(     ","     )(     ","   {####}   ","____________"]
-         wbk = ["    _+_     ","    \\#/     ","    <#>     ","    }#\{     ","    )#(     ","___{###}____"]
-
-
-
-
-
-
-
-
-
-black_square = ["############","############","############","############","############","############"]
-         bwp = ["############","############","#### () ####","#### )( ####","### (__) ###","############"]
-         bwr = ["############","####_ _ _###","## [____] ##","### ]__[ ###","## [____] ##","############"]
-         bwn = ["############","#####___####","## <(@__] ##","### )_) ####","## (___) ###","############"]
-         bwb = ["############","#### {} ####","#### <> ####","#### )( ####","### (__) ###","############"]
-         bwq = ["### oooo ###","### \\__/ ###","#### )( ####","#### )( ####","## {____} ##","############"]
-         bwk = ["### _+_ ####","### \\_/ ####","### < > ####","### } { ####","### )_( ####","## {___} ###"]
-         
-         bbp = ["############","############","#### () ####","#### )( ####","### (##) ###","############"]
-         bbr = ["############","####_ _ _###","## [####] ##","### ]##[ ###","## [####] ##","############"]
-         bbn = ["############","#####___####","## <(@##] ##","### )#) ####","## (###) ###","############"]
-         bbb = ["############","#### {} ####","#### <> ####","#### )( ####","### (##) ###","############"]
-         bbq = ["### oooo ###","### \\##/ ###","#### )( ####","#### )( ####","## {####} ##","############"]
-         bbk = ["### _+_ ####","### \\#/ ####","### <#> ####","### }#\{ ####","### )#( ####","## {###} ###"]
-
 
 
 d = ""
@@ -130,71 +198,14 @@ board.each_index do |row|
     for i in 0..5
         d << "\n||"
         board[row].each do |sq|
-            if sq.color == :w 
-                case sq.contains
-                when :e
-                    d << white_square[i]
-                when :wp 
-                    d << wwp[i] 
-                when :wr 
-                    d << wwr[i]
-                when :wn
-                    d << wwn[i]
-                when :wb
-                    d << wwb[i]
-                when :wq 
-                    d << wwq[i]
-                when :wk 
-                    d << wwk[i]
-
-                when :bp 
-                    d << wbp[i] 
-                when :br 
-                    d << wbr[i]
-                when :bn
-                    d << wbn[i]
-                when :bb
-                    d << wbb[i]
-                when :bq 
-                    d << wbq[i]
-                when :bk 
-                    d << wbk[i]
-                end 
-
-            elsif sq.color == :b 
-                case sq.contains
-                when :e 
-                d << black_square[i]
-                when :wp 
-                    d << bwp[i]
-                when :wr 
-                    d << bwr[i]
-                when :wn
-                    d << bwn[i]
-                when :wb 
-                    d << bwb[i]
-                when :wq
-                    d << bwq[i]
-                when :wk 
-                    d << bwk[i]
-
-                when :bp 
-                    d << bbp[i] 
-                when :br 
-                    d << bbr[i]
-                when :bn
-                    d << bbn[i]
-                when :bb
-                    d << bbb[i]
-                when :bq 
-                    d << bbq[i]
-                when :bk 
-                    d << bbk[i]
-                end
-          end
-           d << "|"
-      end 
-       d << "|"
+            if sq.contains == :e 
+                d << sq.display[i]
+            else
+                d << sq.contains.display[i]
+            end 
+            d << "|"
+        end
+        d << "|"   
     end 
 end 
 
@@ -202,7 +213,4 @@ end
 puts d 
 
 
-
-
-
-
+p board[6][0].contains.is_a?(Pawn)
