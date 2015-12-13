@@ -20,7 +20,7 @@ class Piece
     def initialize(color, square)
         @color = color 
         @square = square 
-        @move = move 
+        @move = 0
     end
 end
 
@@ -206,9 +206,10 @@ end
 
 
 def move(from, to)
-    if from.contains != :e && from.contains.valid_moves(@board).include?(to)
-        to.contains = from.contains 
-        from.contains.square = to 
+    piece = from.contains 
+    if piece != :e && piece.valid_moves(@board).include?(to)
+        to.contains = piece 
+        piece.square = to 
         from.contains = :e 
         true
     else
