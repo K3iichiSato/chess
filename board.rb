@@ -226,11 +226,21 @@ end
 
 def display
 d = ""
-line = " _________________________________________________________________________________________________________"
+letters= "\n        A            B            C            D            E            F            G            H"
+number = 8 
+d << letters 
+line = "\n _________________________________________________________________________________________________________"
 d << line 
 @board.each_index do |row|
     for i in 0..5
-        d << "\n||"
+        d << "\n"
+        if i == 3 
+            d << number.to_s 
+            number -= 1
+        else
+            d << " "
+        end
+        d << "||"
         @board[row].each do |sq|
             if sq.contains == :e 
                 d << sq.display[i]
@@ -240,8 +250,10 @@ d << line
             d << "|"
         end
         d << "|"   
+        d << (number+1).to_s if i == 3 
     end 
 end 
+d << letters
 puts d 
 end 
 def key(letter)
