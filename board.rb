@@ -44,12 +44,12 @@ class Pawn < Piece
 
         valid_moves = []
         if color == :w 
-        valid_moves = [board[square.row-1][square.col]] 
+        valid_moves =  board[square.row-1][square.col] if board[square.row-1][square.col] == :e
         valid_moves << board[square.row-2][square.col] if move == 0 #move 2 sq on first move
         valid_moves << board[square.row-1][square.col-1] if board[square.row-1][square.col-1].contains.is_a?(Piece)    #capture left diagnal
         valid_moves << board[square.row-1][square.col+1] if board[square.row-1][square.col+1].contains.is_a?(Piece)   #capture right diagnal
         elsif color == :b
-        valid_moves = [board[square.row+1][square.col],board[square.row+2][square.col]]
+        valid_moves =  board[square.row+1][square.col] if board[square.row+1][square.col] == :e 
         valid_moves << board[square.row+2][square.col] if move == 0
         valid_moves << board[square.row+1][square.col-1] if board[square.row+1][square.col-1].contains.is_a?(Piece)    #capture left diagnal
         valid_moves << board[square.row+1][square.col+1] if board[square.row+1][square.col+1].contains.is_a?(Piece)   #capture right diagnal
@@ -244,26 +244,23 @@ d << line
 end 
 puts d 
 end 
+def key(letter)
+    list = ('a'..'h').to_a
+    list.find_index(letter)
+end
+def row (row)
+    -(row.to_i-8)
+end
 
+def input (i = gets.chomp)
+  
+    move(@board[row(i[1])][key(i[0])], @board[row(i[3])][key(i[2])])
+end
 display 
-gets.chomp
-move(@board[6][4],@board[4][4])
-display 
-gets.chomp
-move(@board[1][3],@board[3][3])
-display 
-gets.chomp
-move(@board[4][4],@board[3][3])
-display 
-gets.chomp
-move(@board[1][4],@board[2][4])
-display 
-gets.chomp
-move(@board[6][2],@board[4][2])
-display 
-gets.chomp
-move(@board[2][4],@board[3][3])
-display 
+loop do
+input 
+display
+end
 =begin
 gets.chomp
 
