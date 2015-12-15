@@ -266,10 +266,14 @@ class Game
     def row (row)
         -(row.to_i-8)
     end
-
+    def read_input_start (i)
+        bo.board[row(i[1])][key(i[0])]
+    end 
+    def read_input_finish (i)
+        bo.board[row(i[3])][key(i[2])]
+    end
     def input (i = gets.chomp)
-      
-        bo.move(bo.board[row(i[1])][key(i[0])], bo.board[row(i[3])][key(i[2])])
+        bo.move(read_input_start(i),read_input_finish(i))
     end
 
     def play 
@@ -280,12 +284,6 @@ class Game
         end
     end 
 end 
-Game.new.play
-=begin
-gets.chomp
+#Game.new.play
 
-move(@board[6][4],@board[5][4])
-display
-
-=end 
 
