@@ -152,10 +152,11 @@ class Queen < Piece
 end 
 
 class Board
-    attr_accessor :board, :captured
+    attr_accessor :board, :captured_w, :captured_b 
     def initialize 
     @board = Array.new(8).map!{Array.new(8)}
-    @captured = []
+    @captured_w = []
+    @captured_b = []
 
     #every other row
     @board.each_index do |row| 
@@ -216,7 +217,8 @@ class Board
 
     def capture(square)
         object = square.contains
-        captured << object if object.is_a?(Piece)
+        captured_w << object if object.is_a?(Piece) && object.color == :w
+        captured_b << object if object.is_a?(Piece) && object.color == :b
     end
 
     def move(from, to)
@@ -315,6 +317,6 @@ class Game
         end
     end 
 end 
-Game.new.play
+#Game.new.play
 
 
