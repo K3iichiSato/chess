@@ -144,9 +144,10 @@ class Queen < Piece
 end 
 
 class Board
-    attr_accessor :board 
+    attr_accessor :board, :captured
     def initialize 
     @board = Array.new(8).map!{Array.new(8)}
+    @captured = []
 
     #every other row
     @board.each_index do |row| 
@@ -205,9 +206,15 @@ class Board
     end 
 
 
+    def capture(square)
+        object = square.contains
+        captured << object if object.is_a?(Piece)
+    end
+
     def move(from, to)
         piece = from.contains 
         if piece != :e && piece.valid_moves(@board).include?(to)
+            capture(to)
             to.contains = piece 
             piece.square = to 
             from.contains = :e 
@@ -271,8 +278,25 @@ class Game
     def read_input_finish (i)
         bo.board[row(i[3])][key(i[2])]
     end
-    def input (i = gets.chomp)
-        bo.move(read_input_start(i),read_input_finish(i))
+    def valid_string (i)
+        valid = true 
+        valid = false if i.length != 4
+        valid = false if key(i[0]) == nil 
+        valid = false if key(i[2]) == nil 
+        valid = false if !(1..8).include?(i[1].to_i) 
+        valid = false if !(1..8).include?(i[3].to_i) 
+        valid
+    end
+    def input 
+        loop do 
+            i = gets.chomp
+            valid_response = bo.move(read_input_start(i),read_input_finish(i)) if valid_string(i)
+            if valid_response == false 
+                puts "Invalid Move."
+            else 
+                break
+            end
+        end
     end
 
     def play 
