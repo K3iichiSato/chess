@@ -83,8 +83,8 @@ class Rook < Piece
     end
     def valid_moves(board)
         valid_moves = []
-        if square.col != 7                         #iterate through columns downwards. add squares if empty or opposing piece 
-            for i in (square.col+1)..7           
+        if square.row != 7                         #iterate through columns downwards. add squares if empty or opposing piece 
+            for i in (square.row+1)..7           
                 s = board[i][square.col]
                 if s.contains == :e 
                     valid_moves << s
@@ -96,8 +96,8 @@ class Rook < Piece
                 end
             end
         end
-        if square.col != 0                         #iterate through columns upwards. add squares if empty or opposing piece 
-            for i in (square.col-1)..7    
+        if square.row != 0                         #iterate through columns upwards. add squares if empty or opposing piece 
+            for i in (7-(square.row-1))..7    
                 i = 7-i                          #iterate towards 0 
                 s = board[i][square.col]
                 if s.contains == :e 
@@ -110,10 +110,10 @@ class Rook < Piece
                 end
             end
         end
-        if square.row != 0                         #iterate through rows to left
-            for i in (square.row-1)..7       
+        if square.col != 0                         #iterate through rows to left
+            for i in (7-(square.col-1))..7       
                 i = 7-i                        #iterate towards 0 
-                s = board[i][square.col]
+                s = board[square.row][i]
                 if s.contains == :e 
                     valid_moves << s
                 elsif s.contains.is_a?(Piece) && s.contains.color != color 
@@ -124,9 +124,9 @@ class Rook < Piece
                 end
             end
         end
-        if square.row != 7                         #iterate through rows to right
-            for i in (square.row+1)..7      
-                s = board[i][square.col]
+        if square.col != 7                         #iterate through rows to right
+            for i in (square.col+1)..7      
+                s = board[square.row][i]
                 if s.contains == :e 
                     valid_moves << s
                 elsif s.contains.is_a?(Piece) && s.contains.color != color 
