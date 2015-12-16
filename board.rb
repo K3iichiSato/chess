@@ -50,7 +50,7 @@ class Pawn < Piece
         valid_moves << s if move == 0 && s.contains == :e#move 2 sq on first move
         s = board[square.row-1][square.col-1] if square.col > 0
         valid_moves << s if s.contains.is_a?(Piece) && s.contains.color == :b    #capture left diagnal
-        s = board[square.row-1][square.col+1] if square.col < 6
+        s = board[square.row-1][square.col+1] if square.col < 7
         valid_moves << s if s.contains.is_a?(Piece) && s.contains.color == :b   #capture right diagnal
         elsif color == :b
         s = board[square.row+1][square.col]
@@ -59,7 +59,7 @@ class Pawn < Piece
         valid_moves << s if move == 0 && s.contains == :e 
         s = board[square.row+1][square.col-1] if square.col > 0 
         valid_moves << s if s.contains.is_a?(Piece) && s.contains.color == :w    #capture left diagnal
-        s = board[square.row+1][square.col+1] if square.col < 6  
+        s = board[square.row+1][square.col+1] if square.col < 7  
         valid_moves << s if s.contains.is_a?(Piece) && s.contains.color == :w   #capture right diagnal
         end
         valid_moves
@@ -176,14 +176,54 @@ class Bishop < Piece
     def valid_moves(board)
         valid_moves = [] 
         current_square = square
-        loop do        
-            current_square = board[current_square.row-1][current_square.col+1]        # top right diagnol 
+        while current_square.row > 0 && current_square.col < 7 do         
+            current_square = board[current_square.row-1][current_square.col+1]      # top right diagnol 
             if current_square != nil && current_square.contains == :e 
                 valid_moves << current_square
+            elsif current_square != nil && current_square.contains.is_a?(Piece) && current_square.contains.color != color
+                valid_moves << current_square
+                break
             else
                 break
             end
         end
+        current_square = square 
+        while current_square.row > 0 && current_square.col > 0 do      
+            current_square = board[current_square.row-1][current_square.col-1]      # top left diagnol 
+            if current_square != nil && current_square.contains == :e 
+                valid_moves << current_square
+            elsif current_square != nil && current_square.contains.is_a?(Piece) && current_square.contains.color != color
+                valid_moves << current_square
+                break
+            else
+                break
+            end
+        end
+        current_square = square 
+        while current_square.row < 7 && current_square.col > 0 do        
+            current_square = board[current_square.row+1][current_square.col-1]         # bottom left diagnol 
+            if current_square != nil && current_square.contains == :e 
+                valid_moves << current_square
+            elsif current_square != nil && current_square.contains.is_a?(Piece) && current_square.contains.color != color
+                valid_moves << current_square
+                break
+            else
+                break
+            end
+        end
+        current_square = square 
+        while current_square.row < 7 && current_square.col < 7 do        
+            current_square = board[current_square.row+1][current_square.col+1]         # bottom right diagnol 
+            if current_square != nil && current_square.contains == :e 
+                valid_moves << current_square
+            elsif current_square != nil && current_square.contains.is_a?(Piece) && current_square.contains.color != color
+                valid_moves << current_square
+                break
+            else
+                break
+            end
+        end
+
         valid_moves
     end
 end 
@@ -389,6 +429,6 @@ class Game
         end
     end 
 end 
-#Game.new.play
+Game.new.play
 
 
