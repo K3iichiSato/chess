@@ -218,28 +218,28 @@ class Board
 
     #every other row
     @board.each_index do |row| 
-        if row % 2 == 0 
-            @board[row].each_index do |col|
-                if col % 2 == 0 
-                    @board[row][col] = Square.new(:w, row, col)
-                else
-                    @board[row][col] = Square.new(:b, row, col)
+            if row % 2 == 0 
+                @board[row].each_index do |col|
+                    if col % 2 == 0 
+                        @board[row][col] = Square.new(:w, row, col)
+                    else
+                        @board[row][col] = Square.new(:b, row, col)
+                    end
                 end
-            end
-        else 
-            @board[row].each_index do |col|
-                if col % 2 == 0 
-                    @board[row][col] = Square.new(:b, row, col)
-                else
-                    @board[row][col] = Square.new(:w, row, col)
-                end
-            end       
-        end 
-    end
+            else 
+                @board[row].each_index do |col|
+                    if col % 2 == 0 
+                        @board[row][col] = Square.new(:b, row, col)
+                    else
+                        @board[row][col] = Square.new(:w, row, col)
+                    end
+                end       
+            end 
+        end
+    end 
 
 
-
-     
+    def set_board 
     @board[6].each_index do |c|
         @board[6][c].contains = Pawn.new(:w, @board[6][c])
     end
@@ -270,7 +270,7 @@ class Board
 
     @board[7][4].contains = King.new(:w, @board[7][4])
     @board[0][4].contains = King.new(:b, @board[0][4])
-    end 
+    end
 
 
     def capture(square)
@@ -331,6 +331,7 @@ class Game
     attr_accessor :bo
     def initialize
     @bo = Board.new
+    @bo.set_board
     end
 
     def key(letter)
@@ -375,6 +376,6 @@ class Game
         end
     end 
 end 
-Game.new.play
+#Game.new.play
 
 
