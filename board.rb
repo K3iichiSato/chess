@@ -44,15 +44,23 @@ class Pawn < Piece
 
         valid_moves = []
         if color == :w 
-        valid_moves <<  board[square.row-1][square.col] if board[square.row-1][square.col].contains == :e
-        valid_moves << board[square.row-2][square.col] if move == 0 #move 2 sq on first move
-        valid_moves << board[square.row-1][square.col-1] if board[square.row-1][square.col-1].contains.is_a?(Piece)    #capture left diagnal
-        valid_moves << board[square.row-1][square.col+1] if board[square.row-1][square.col+1].contains.is_a?(Piece)   #capture right diagnal
+        s = board[square.row-1][square.col]
+        valid_moves <<  s if s.contains == :e
+        s = board[square.row-2][square.col]
+        valid_moves << s if move == 0 && s.contains == :e#move 2 sq on first move
+        s = board[square.row-1][square.col-1]
+        valid_moves << s if s.contains.is_a?(Piece) && s.contains.color == :b    #capture left diagnal
+        s = board[square.row-1][square.col+1]
+        valid_moves << s if s.contains.is_a?(Piece) && s.contains.color == :b   #capture right diagnal
         elsif color == :b
-        valid_moves <<  board[square.row+1][square.col] if board[square.row+1][square.col].contains == :e 
-        valid_moves << board[square.row+2][square.col] if move == 0
-        valid_moves << board[square.row+1][square.col-1] if board[square.row+1][square.col-1].contains.is_a?(Piece)    #capture left diagnal
-        valid_moves << board[square.row+1][square.col+1] if board[square.row+1][square.col+1].contains.is_a?(Piece)   #capture right diagnal
+        s = board[square.row+1][square.col]
+        valid_moves << s if s.contains == :e 
+        s = board[square.row+2][square.col] if square.row < 6
+        valid_moves << s if move == 0 && s.contains == :e 
+        s = board[square.row+1][square.col-1]
+        valid_moves << s if s.contains.is_a?(Piece) && s.contains.color == :w    #capture left diagnal
+        s = board[square.row+1][square.col+1]
+        valid_moves << s if s.contains.is_a?(Piece) && s.contains.color == :w   #capture right diagnal
         end
         valid_moves
     end 
@@ -213,7 +221,7 @@ class Board
 
     def move(from, to)
         piece = from.contains 
-        if piece != :e && piece.valid_moves(@board).include?(to)
+        if piece != :e && piece.valid_moves(board).include?(to)
             capture(to)
             to.contains = piece 
             piece.square = to 
@@ -302,11 +310,11 @@ class Game
     def play 
         bo.display 
         loop do
-        p input 
+        input 
         bo.display
         end
     end 
 end 
-#Game.new.play
+Game.new.play
 
 
