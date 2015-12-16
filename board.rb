@@ -173,6 +173,19 @@ class Bishop < Piece
             end
         end
     end
+    def valid_moves(board)
+        valid_moves = [] 
+        current_square = square
+        loop do        
+            current_square = board[current_square.row-1][current_square.col+1]        # top right diagnol 
+            if current_square != nil && current_square.contains == :e 
+                valid_moves << current_square
+            else
+                break
+            end
+        end
+        valid_moves
+    end
 end 
 class King < Piece 
     def display 
