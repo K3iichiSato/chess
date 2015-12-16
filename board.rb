@@ -44,19 +44,18 @@ class Pawn < Piece
 
         valid_moves = []
         if color == :w 
-        valid_moves =  board[square.row-1][square.col] if board[square.row-1][square.col] == :e
+        valid_moves <<  board[square.row-1][square.col] if board[square.row-1][square.col] == :e
         valid_moves << board[square.row-2][square.col] if move == 0 #move 2 sq on first move
         valid_moves << board[square.row-1][square.col-1] if board[square.row-1][square.col-1].contains.is_a?(Piece)    #capture left diagnal
         valid_moves << board[square.row-1][square.col+1] if board[square.row-1][square.col+1].contains.is_a?(Piece)   #capture right diagnal
         elsif color == :b
-        valid_moves =  board[square.row+1][square.col] if board[square.row+1][square.col] == :e 
+        valid_moves <<  board[square.row+1][square.col] if board[square.row+1][square.col] == :e 
         valid_moves << board[square.row+2][square.col] if move == 0
         valid_moves << board[square.row+1][square.col-1] if board[square.row+1][square.col-1].contains.is_a?(Piece)    #capture left diagnal
         valid_moves << board[square.row+1][square.col+1] if board[square.row+1][square.col+1].contains.is_a?(Piece)   #capture right diagnal
         end
         valid_moves
     end 
-
 end 
 class Rook < Piece 
     def display 
@@ -212,6 +211,7 @@ class Board
             to.contains = piece 
             piece.square = to 
             from.contains = :e 
+            piece.valid_moves(@board)
             piece.move += 1 
             true
         else
