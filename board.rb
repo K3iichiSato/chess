@@ -48,18 +48,18 @@ class Pawn < Piece
         valid_moves <<  s if s.contains == :e
         s = board[square.row-2][square.col]
         valid_moves << s if move == 0 && s.contains == :e#move 2 sq on first move
-        s = board[square.row-1][square.col-1]
+        s = board[square.row-1][square.col-1] if square.col > 0
         valid_moves << s if s.contains.is_a?(Piece) && s.contains.color == :b    #capture left diagnal
-        s = board[square.row-1][square.col+1]
+        s = board[square.row-1][square.col+1] if square.col < 6
         valid_moves << s if s.contains.is_a?(Piece) && s.contains.color == :b   #capture right diagnal
         elsif color == :b
         s = board[square.row+1][square.col]
         valid_moves << s if s.contains == :e 
         s = board[square.row+2][square.col] if square.row < 6
         valid_moves << s if move == 0 && s.contains == :e 
-        s = board[square.row+1][square.col-1]
+        s = board[square.row+1][square.col-1] if square.col > 0 
         valid_moves << s if s.contains.is_a?(Piece) && s.contains.color == :w    #capture left diagnal
-        s = board[square.row+1][square.col+1]
+        s = board[square.row+1][square.col+1] if square.col < 6  
         valid_moves << s if s.contains.is_a?(Piece) && s.contains.color == :w   #capture right diagnal
         end
         valid_moves
