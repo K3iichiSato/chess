@@ -211,7 +211,6 @@ class Board
             to.contains = piece 
             piece.square = to 
             from.contains = :e 
-            piece.valid_moves(@board)
             piece.move += 1 
             true
         else
@@ -284,6 +283,6 @@ class Game
         end
     end 
 end 
-Game.new.play
+#Game.new.play
 
 
