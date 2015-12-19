@@ -211,6 +211,20 @@ class Knight < Piece
             end
         end
     end
+    def valid_moves(board)
+        valid_moves = []
+        possible_moves = [[1,2],[2,1],[2,-1],[1,-2],[-1,-2],[-2,-1],[-2,1],[-1,2]]
+        possible_moves.each do |diff|
+            row = square.row + diff[0]
+            next if row < 0 || row > 7
+            col = square.col + diff[1]
+            next if col < 0 || col > 7 
+            s = board[row][col]
+            next if s.contains.is_a?(Piece) && s.contains.color == color 
+            valid_moves << s
+        end
+        valid_moves
+    end 
 end 
 class Bishop < Piece 
     def display 
@@ -248,6 +262,20 @@ class King < Piece
             end
         end
     end
+    def valid_moves(board)
+        valid_moves = []
+        possible_moves = [[1,0],[1,1],[0,1],[-1,1],[-1,0],[-1,-1],[0,-1],[1,-1]]
+        possible_moves.each do |diff|
+            row = square.row + diff[0]
+            next if row < 0 || row > 7
+            col = square.col + diff[1]
+            next if col < 0 || row > 7 
+            s = board[row][col]
+            next if s.contains.is_a?(Piece) && s.contains.color == color 
+            valid_moves << s
+        end
+        valid_moves
+    end 
 end 
 class Queen < Piece 
     def display 
@@ -333,7 +361,9 @@ class Board
     @board[0][4].contains = King.new(:b, @board[0][4])
     end
 
-
+    def attacked?(square)
+        #Check row up for Rooks or Queens
+    end
     def capture(square)
         object = square.contains
         captured_w << object if object.is_a?(Piece) && object.color == :w

@@ -163,8 +163,26 @@ describe Queen do
 		expect(queen.valid_moves(@bo.board)).to eql [@bo.board[6][0],@bo.board[5][0],@bo.board[4][0],@bo.board[3][0],@bo.board[2][0],@bo.board[1][0],@bo.board[0][0],@bo.board[7][1],@bo.board[7][2],@bo.board[7][3],@bo.board[7][4],@bo.board[7][5],@bo.board[7][6],@bo.board[7][7],@bo.board[6][1],@bo.board[5][2],@bo.board[4][3],@bo.board[3][4],@bo.board[2][5],@bo.board[1][6],@bo.board[0][7]]
 	end 
 end 
-
-
+describe Knight do 
+	before :each do 
+		@bo = Board.new 
+	end 
+	it "returns proper squares" do 
+		knight = Knight.new(:w, @bo.board[4][4])
+		@bo.board[4][4].contains = knight 
+		expect(knight.valid_moves(@bo.board)).to eql [@bo.board[5][6],@bo.board[6][5],@bo.board[6][3],@bo.board[5][2],@bo.board[3][2],@bo.board[2][3],@bo.board[2][5],@bo.board[3][6]]
+	end 
+	it "does not return edge squares" do 
+		knight = Knight.new(:w, @bo.board[7][1])
+		@bo.board[7][1].contains = knight 
+		expect(knight.valid_moves(@bo.board)).to eql [@bo.board[5][0],@bo.board[5][2],@bo.board[6][3]]
+	end 
+	it "does not return edge squares" do 
+		knight = Knight.new(:w, @bo.board[7][6])
+		@bo.board[7][6].contains = knight 
+		expect(knight.valid_moves(@bo.board)).to eql [@bo.board[6][4],@bo.board[5][5],@bo.board[5][7]]
+	end 
+end 
 
 
 
