@@ -114,7 +114,7 @@ describe Bishop do
 		@bo = Board.new 
 	end 
 	context '#valid_moves' do 
-		it 'returns diagnol squares' do
+		it 'returns diagonal squares' do
 			bishop = Bishop.new(:w, @bo.board[7][0])
 			@bo.board[7][0].contains = bishop 
 			expect(bishop.valid_moves(@bo.board)).to eql [@bo.board[6][1],@bo.board[5][2],@bo.board[4][3],@bo.board[3][4],@bo.board[2][5],@bo.board[1][6],@bo.board[0][7]]
@@ -131,22 +131,22 @@ describe Bishop do
 			@bo.board[4][3].contains = Pawn.new(:b, @bo.board[4][3])
 			expect(bishop.valid_moves(@bo.board)).to eql [@bo.board[6][1],@bo.board[5][2],@bo.board[4][3]]
 		end 
-		it 'returns diagnol squares' do
+		it 'returns diagonal squares' do
 			bishop = Bishop.new(:w, @bo.board[0][7])
 			@bo.board[0][7].contains = bishop 
 			expect(bishop.valid_moves(@bo.board)).to eql [@bo.board[1][6],@bo.board[2][5],@bo.board[3][4],@bo.board[4][3],@bo.board[5][2],@bo.board[6][1],@bo.board[7][0]]
 		end
-		it 'returns diagnol squares' do
+		it 'returns diagonal squares' do
 			bishop = Bishop.new(:w, @bo.board[0][0])
 			@bo.board[0][0].contains = bishop 
 			expect(bishop.valid_moves(@bo.board)).to eql [@bo.board[1][1],@bo.board[2][2],@bo.board[3][3],@bo.board[4][4],@bo.board[5][5],@bo.board[6][6],@bo.board[7][7]]
 		end
-		it 'returns left diagnol squares' do
+		it 'returns left diagonal squares' do
 			bishop = Bishop.new(:w, @bo.board[7][7])
 			@bo.board[7][7].contains = bishop 
 			expect(bishop.valid_moves(@bo.board)).to eql [@bo.board[6][6],@bo.board[5][5],@bo.board[4][4],@bo.board[3][3],@bo.board[2][2],@bo.board[1][1],@bo.board[0][0]]
 		end
-		it 'returns diagnol squares' do
+		it 'returns diagonal squares' do
 			bishop = Bishop.new(:w, @bo.board[7][5])
 			@bo.board[7][5].contains = bishop 
 			expect(bishop.valid_moves(@bo.board)).to eql [@bo.board[6][6],@bo.board[5][7],@bo.board[6][4],@bo.board[5][3],@bo.board[4][2],@bo.board[3][1],@bo.board[2][0]]
@@ -160,7 +160,7 @@ describe Queen do
 	it 'returns proper squares' do 
 		queen = Queen.new(:w, @bo.board[7][0])
 		@bo.board[7][0].contains = queen 
-		expect(queen.valid_moves(@bo.board)).to eql [@bo.board[6][0],@bo.board[5][0],@bo.board[4][0],@bo.board[3][0],@bo.board[2][0],@bo.board[1][0],@bo.board[0][0],@bo.board[0][0],@bo.board[0][1],@bo.board[0][2],@bo.board[0][3],@bo.board[0][4],@bo.board[0][5],@bo.board[0][6],@bo.board[6][1],@bo.board[5][2],@bo.board[4][3],@bo.board[3][4],@bo.board[2][5],@bo.board[1][6],@bo.board[0][7]]
+		expect(queen.valid_moves(@bo.board)).to eql [@bo.board[6][0],@bo.board[5][0],@bo.board[4][0],@bo.board[3][0],@bo.board[2][0],@bo.board[1][0],@bo.board[0][0],@bo.board[7][1],@bo.board[7][2],@bo.board[7][3],@bo.board[7][4],@bo.board[7][5],@bo.board[7][6],@bo.board[7][7],@bo.board[6][1],@bo.board[5][2],@bo.board[4][3],@bo.board[3][4],@bo.board[2][5],@bo.board[1][6],@bo.board[0][7]]
 	end 
 end 
 
