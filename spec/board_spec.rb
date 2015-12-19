@@ -58,10 +58,11 @@ end
 describe Board do 
 	before :each do 
 		@bo = Board.new
-		@bo.set_board
+		
 	end
 	context '#move' do 
 		it 'can move left pawn' do 
+			@bo.set_board
 			pawn = @bo.board[6][0].contains 
 			expect(pawn).to be_a(Pawn)
 			@bo.move(@bo.board[6][0],@bo.board[4][0])
@@ -69,6 +70,7 @@ describe Board do
 			expect(@bo.board[4][0].contains).to eql pawn
 		end
 		it 'can move right pawn' do 
+			@bo.set_board
 			pawn = @bo.board[6][7].contains
 			@bo.move(@bo.board[6][7],@bo.board[4][7])
 			expect(@bo.board[6][7].contains).to eql :e 
@@ -76,12 +78,14 @@ describe Board do
 		end		
 
 		it 'can move pawn twice' do 
+			@bo.set_board
 			pawn = @bo.board[6][0].contains
 			@bo.move(@bo.board[6][0],@bo.board[4][0])
 			@bo.move(@bo.board[4][0],@bo.board[3][0])
 			expect(@bo.board[3][0].contains).to eql pawn
 		end
 		it 'can move black pawn to end' do 
+			@bo.set_board
 			board = @bo.board
 			@bo.move(board[1][4],board[3][4])
 			@bo.move(board[3][4],board[4][4])
@@ -93,10 +97,62 @@ describe Board do
 	end 
 	context '#capture' do 
 		it 'appends captured array with piece' do 
+			@bo.set_board
 			square = @bo.board[6][0]
 			@bo.capture(square)
 			expect(@bo.captured_w).to eql [square.contains]
 		end
+		it 'removes captured piece from active array' do 
+			square = @bo.board[6][0]
+			pawn = Pawn.new(:w,square)
+			@bo.add_piece(pawn)
+			expect(@bo.active_w).to eql [pawn]
+			@bo.capture(square)
+			expect(@bo.active_w).to eql []
+			expect(@bo.captured_w).to eql [pawn]
+		end 
+	end 
+
+	context '#attacked?' do 
+		it 'checks upwards empty' do 
+			square = @bo.board[7][0]	
+			expect(@bo.attacked?(square,:w)).to be false 
+		end
+		it 'checks upwards for enemy rook' do 
+			square = @bo.board[7][0]	
+			@bo.add_piece(Rook.new(:b, @bo.board[0][0]))
+			expect(@bo.attacked?(square,:w)).to be true
+		end
+		it 'checks upwards for enemy rook blocked by friendly piece' do 
+			square = @bo.board[7][0]	
+			@bo.add_piece(Rook.new(:b, @bo.board[0][0]))
+			@bo.add_piece(Rook.new(:w, @bo.board[4][0])) 
+			expect(@bo.attacked?(square,:w)).to be false
+		end
+		it 'checks upwards for enemy queen' do 
+			square = @bo.board[7][0]	
+			@bo.add_piece(Queen.new(:b, @bo.board[0][0]))
+			expect(@bo.attacked?(square,:w)).to be true
+		end
+		it 'checks upwards for enemy queen blocked by friendly piece' do 
+			square = @bo.board[7][0]	
+			@bo.add_piece(Queen.new(:b, @bo.board[0][0]))
+			@bo.add_piece(Queen.new(:w, @bo.board[4][0]))
+			expect(@bo.attacked?(square,:w)).to be false
+		end
+	end 
+	context "#check?" do 
+		it 'returns false if white king is not checked' do 
+		    @bo.w_king = @bo.add_piece(King.new(:w, @bo.board[7][4]))
+    		@bo.b_king = @bo.add_piece(King.new(:b, @bo.board[0][4])) 
+    		expect(@bo.check?(@bo.w_king)).to be false 
+		end 
+		it 'returns true if white king is checked' do 
+		    @bo.w_king = @bo.add_piece(King.new(:w, @bo.board[7][4]))
+    		@bo.b_king = @bo.add_piece(King.new(:b, @bo.board[0][4])) 
+    		@bo.add_piece(Queen.new(:b, @bo.board[4][4]))
+    		expect(@bo.check?(@bo.w_king)).to be true  
+		end 
 	end 
 end 
 describe Rook do 

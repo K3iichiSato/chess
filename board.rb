@@ -154,23 +154,23 @@ class Pawn < Piece
 
         valid_moves = []
         if color == :w 
-        s = board[square.row-1][square.col]
-        valid_moves <<  s if s.contains == :e
-        s = board[square.row-2][square.col]
-        valid_moves << s if move == 0 && s.contains == :e#move 2 sq on first move
-        s = board[square.row-1][square.col-1] if square.col > 0
-        valid_moves << s if s.contains.is_a?(Piece) && s.contains.color == :b    #capture left diagonal 
-        s = board[square.row-1][square.col+1] if square.col < 7
-        valid_moves << s if s.contains.is_a?(Piece) && s.contains.color == :b   #capture right diagonal 
+            s = board[square.row-1][square.col]
+            valid_moves <<  s if s.contains == :e
+            s = board[square.row-2][square.col]
+            valid_moves << s if move == 0 && s.contains == :e#move 2 sq on first move
+            s = board[square.row-1][square.col-1] if square.col > 0
+            valid_moves << s if s.contains.is_a?(Piece) && s.contains.color == :b    #capture left diagonal 
+            s = board[square.row-1][square.col+1] if square.col < 7
+            valid_moves << s if s.contains.is_a?(Piece) && s.contains.color == :b   #capture right diagonal 
         elsif color == :b
-        s = board[square.row+1][square.col]
-        valid_moves << s if s.contains == :e 
-        s = board[square.row+2][square.col] if square.row < 6
-        valid_moves << s if move == 0 && s.contains == :e 
-        s = board[square.row+1][square.col-1] if square.col > 0 
-        valid_moves << s if s.contains.is_a?(Piece) && s.contains.color == :w    #capture left diagonal 
-        s = board[square.row+1][square.col+1] if square.col < 7  
-        valid_moves << s if s.contains.is_a?(Piece) && s.contains.color == :w   #capture right diagonal 
+            s = board[square.row+1][square.col]
+            valid_moves << s if s.contains == :e 
+            s = board[square.row+2][square.col] if square.row < 6
+            valid_moves << s if move == 0 && s.contains == :e 
+            s = board[square.row+1][square.col-1] if square.col > 0 
+            valid_moves << s if s.contains.is_a?(Piece) && s.contains.color == :w    #capture left diagonal 
+            s = board[square.row+1][square.col+1] if square.col < 7  
+            valid_moves << s if s.contains.is_a?(Piece) && s.contains.color == :w   #capture right diagonal 
         end
         valid_moves
     end 
@@ -299,11 +299,15 @@ class Queen < Piece
 end 
 
 class Board
-    attr_accessor :board, :captured_w, :captured_b 
+    attr_accessor :board, :captured_w, :captured_b, :active_w, :active_b, :w_king, :b_king
     def initialize 
     @board = Array.new(8).map!{Array.new(8)}
     @captured_w = []
     @captured_b = []
+    @active_w = [] 
+    @active_b = []
+    @w_king = nil
+    @b_king = nil 
 
     #every other row
     @board.each_index do |row| 
@@ -327,47 +331,73 @@ class Board
         end
     end 
 
+    def add_piece(piece)
+        piece.square.contains = piece 
+        active_w << piece if piece.color == :w 
+        active_b << piece if piece.color == :b
+        piece 
+    end
+
 
     def set_board 
     @board[6].each_index do |c|
-        @board[6][c].contains = Pawn.new(:w, @board[6][c])
+        add_piece(Pawn.new(:w, @board[6][c]))
     end
     @board[1].each_index do |c|
-        @board[1][c].contains = Pawn.new(:b, @board[1][c]) 
+        add_piece(Pawn.new(:b, @board[1][c])) 
     end
 
-    @board[7][0].contains = Rook.new(:w, @board[7][0])
-    @board[7][7].contains = Rook.new(:w, @board[7][7])
+    add_piece(Rook.new(:w, @board[7][0]))
+    add_piece(Rook.new(:w, @board[7][7]))
 
-    @board[0][0].contains = Rook.new(:b, @board[0][0])
-    @board[0][7].contains = Rook.new(:b, @board[0][7])
+    add_piece(Rook.new(:b, @board[0][0]))
+    add_piece(Rook.new(:b, @board[0][7]))
 
-    @board[7][1].contains = Knight.new(:w, @board[7][1]) 
-    @board[7][6].contains = Knight.new(:w, @board[7][6]) 
+    add_piece(Knight.new(:w, @board[7][1])) 
+    add_piece(Knight.new(:w, @board[7][6]))
 
-    @board[0][1].contains = Knight.new(:b, @board[0][1])  
-    @board[0][6].contains = Knight.new(:b, @board[0][6])  
+    add_piece(Knight.new(:b, @board[0][1]))
+    add_piece(Knight.new(:b, @board[0][6]))  
 
-    @board[7][2].contains = Bishop.new(:w, @board[7][2]) 
-    @board[7][5].contains = Bishop.new(:w, @board[7][5]) 
+    add_piece(Bishop.new(:w, @board[7][2]))
+    add_piece(Bishop.new(:w, @board[7][5]))
 
-    @board[0][2].contains = Bishop.new(:b, @board[0][2]) 
-    @board[0][5].contains = Bishop.new(:b, @board[0][5])  
+    add_piece(Bishop.new(:b, @board[0][2]))
+    add_piece(Bishop.new(:b, @board[0][5]))
 
-    @board[7][3].contains = Queen.new(:w, @board[7][3])
-    @board[0][3].contains = Queen.new(:b, @board[0][3])
+    add_piece(Queen.new(:w, @board[7][3]))
+    add_piece(Queen.new(:b, @board[0][3]))
 
-    @board[7][4].contains = King.new(:w, @board[7][4])
-    @board[0][4].contains = King.new(:b, @board[0][4])
+    @w_king = add_piece(King.new(:w, @board[7][4]))
+    @b_king = add_piece(King.new(:b, @board[0][4]))
     end
+    def check?(king)
+        check = attacked?(king.square, king.color) 
+    end  
 
-    def attacked?(square)
-        #Check row up for Rooks or Queens
+
+    def attacked?(square, color)
+        attacked = false 
+        if color == :w 
+            active_b.each do |pc|
+                attacked = true if pc.valid_moves(board).include?(square)
+            end
+        elsif color == :b 
+            active_w.each do |pc| 
+                attacked = true if pc.valid_moves(board).include?(square)
+            end
+        end
+        attacked 
     end
     def capture(square)
         object = square.contains
-        captured_w << object if object.is_a?(Piece) && object.color == :w
-        captured_b << object if object.is_a?(Piece) && object.color == :b
+        if object.is_a?(Piece) && object.color == :w
+            captured_w << object 
+            active_w.delete(object)
+        elsif object.is_a?(Piece) && object.color == :b
+            captured_b << object 
+            active_b.delete(object)
+        end
     end
     def move(from, to)
         piece = from.contains 
@@ -462,10 +492,12 @@ class Game
         bo.display 
         loop do
         input 
+        p bo.check?(bo.w_king)
+        p bo.check?(bo.b_king)
         bo.display
         end
     end 
 end 
-#Game.new.play
+Game.new.play
 
 
