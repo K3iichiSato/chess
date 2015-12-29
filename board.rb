@@ -448,10 +448,12 @@ class Board
 end
 
 class Game 
-    attr_accessor :bo
+    attr_accessor :bo, :turn
     def initialize
-    @bo = Board.new
-    @bo.set_board
+        @bo = Board.new
+        @bo.set_board
+        @turn = 1
+        @color = :w 
     end
 
     def key(letter)
@@ -469,17 +471,22 @@ class Game
     end
     def valid_string (i)
         valid = true 
-        valid = false if i.length != 4
-        valid = false if key(i[0]) == nil 
-        valid = false if key(i[2]) == nil 
-        valid = false if !(1..8).include?(i[1].to_i) 
-        valid = false if !(1..8).include?(i[3].to_i) 
+        return valid = false if i.length != 4
+        return valid = false if key(i[0]) == nil 
+        return valid = false if key(i[2]) == nil 
+        return valid = false if !(1..8).include?(i[1].to_i) 
+        return valid = false if !(1..8).include?(i[3].to_i) 
+        return valid = false if read_input_start(i).contains.is_a?(Piece) && read_input_start(i).contains.color != @color 
         valid
     end
     def input 
         loop do 
             i = gets.chomp
-            valid_response = bo.move(read_input_start(i),read_input_finish(i)) if valid_string(i)
+            if valid_string(i) == true 
+                valid_response = bo.move(read_input_start(i),read_input_finish(i)) 
+            else
+                valid_response = false 
+            end
             if valid_response == false 
                 puts "Invalid Move."
             else 
@@ -487,17 +494,31 @@ class Game
             end
         end
     end
+    def solicit_move
+        if @color == :w
+            "Enter white move: " 
+        else
+            "Enter black move: "
+        end
+    end
 
     def play 
         bo.display 
         loop do
-        input 
-        p bo.check?(bo.w_king)
-        p bo.check?(bo.b_king)
-        bo.display
+            if turn % 2 != 0 
+                @color = :w 
+            else
+                @color = :b
+            end
+            printf solicit_move
+            input 
+            p bo.check?(bo.w_king)
+            p bo.check?(bo.b_king)
+            bo.display
+            @turn += 1 
         end
     end 
 end 
-Game.new.play
+#Game.new.play
 
 
